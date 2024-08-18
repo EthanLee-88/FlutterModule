@@ -1,6 +1,6 @@
-# flutter_model
+# flutter_module
 
-A new Flutter model.
+A new Flutter project.
 
 ## Getting Started
 
