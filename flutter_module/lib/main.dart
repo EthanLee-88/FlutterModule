@@ -1,77 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-const MethodChannel mMethodChannel = MethodChannel('com.channel.id');
+import 'pages/MainActivity.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(const FlutterApp());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class FlutterApp extends StatelessWidget {
+  //StatelessWidget 无状态（主题）的Widget ，类似于Android的 phoneWindow
+  final String _appTitle = '微信';
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  Future<void> setMsgToNative() async {
-    var str = 'from flutter ${_counter++}';
-    mMethodChannel.invokeMethod('msg_key', {'flutter_msg', str});
-  }
-
-  void _incrementCounter() {
-    setMsgToNative();
-    setState(() {
-      _counter++;
-    });
-  }
+  const FlutterApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    return getMaterialApp();
+  }
+
+  MaterialApp getMaterialApp() {
+    // SharedPreferences.setMockInitialValues({}); //解决 SharedPreferences报错
+    var materialApp = MaterialApp(
+        //Material Design风格
+        title: _appTitle, // 多任务栏显示的名字
+        theme: getThemeData(),
+        home: const MainActivity(
+            title: '微信') //应用界面显示的widget，类似于Android的 DecorView
+        );
+    return materialApp;
+  }
+
+  ThemeData getThemeData() {
+    var theme = ThemeData(
+      primarySwatch: Colors.orange,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
     );
+    return theme;
   }
 }
